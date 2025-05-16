@@ -18,6 +18,8 @@ In Vox-Profile, we experiments with over 15 publicly available datasets to predi
 The example is under src/example/accent_us_uk_other.py
 Simply replace the model path with the model weights provided. The availabel labels are ['British Isles', 'North America', 'Other'].
 
+#### Given that the Vox-Profile Benchmark paper is still under peer-review, we provide limited set of models and model weights before the review is concluded.
+
 
 ### Enabling Versatile Speech Applications with Vox-Profile
 
