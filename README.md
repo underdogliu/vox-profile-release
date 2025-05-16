@@ -18,7 +18,7 @@ In Vox-Profile, we experiments with over 15 publicly available datasets to predi
 
 Our Vox-Profile can be used as a fundamental component to support a versatile speech applications.
 
-#### Speech Model Performance Analysis
+#### 1. Speech Model Performance Analysis
 
 We generate speaker and speech traits for existing datasets and investigate whether these generated labels can lead to the same insights as using the ground truth trait information in analyzing the speech model performances. For example, in the results below, we identify that regardless of grouping by groud truth traits or traits inferred by Vox-Profile, the ASR performance trends remain the same across different traits.
 
@@ -26,7 +26,7 @@ We generate speaker and speech traits for existing datasets and investigate whet
  <img src="img/wer.png" width="800px">
 </div>
 
-#### Automated Evaluation Tool for Speech Generation Tasks
+#### 2. Automated Evaluation Tool for Speech Generation Tasks
 
 We demonstrate the utility of Vox-Profile as an evaluation tool for speech generation tasks by comparing two representative models: FreeVC and VALLE-X. As shown in Table below, the accent prediction scores and the cosine similarity for the synthesized samples from FreeVC suggest greater similarity to the source speaker’s accent than to the reference speaker. In contrast, the scores for VALLE-X indicate closer alignment with the reference speaker’s accent in most conditions. These findings are consistent with previous studies, which report that FreeVC has limited capability in replicating the accentual features of the reference speaker, whereas VALLE-X, due to its intermediate text-based representation, more effectively preserves these features
 
@@ -35,7 +35,7 @@ We demonstrate the utility of Vox-Profile as an evaluation tool for speech gener
 </div>
 
 
-#### Generating Synthetic Speaking Style Prompt
+#### 3. Generating Synthetic Speaking Style Prompt
 Vox-Profile provides a more extensive and varied set of traits, including speech flow, arousal, valence, and speaker age. Moreover, computational models of Vox-Profile output probabilistic predictions for each trait, enabling more nuanced and confidence sensitive descriptions. For example, a Scottish accent prediction with a probability of 0.9 can be described as having a distinct Scottish accent.
 
 <div align="center">
