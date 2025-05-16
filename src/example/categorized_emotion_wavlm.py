@@ -9,7 +9,6 @@ sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1])))
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'emotion'))
 
 from wavlm_emotion import WavLMWrapper
-from whisper_emotion import WhisperWrapper
 
 
 # define logging console

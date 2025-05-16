@@ -9,8 +9,7 @@ from pathlib import Path
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1])))
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'accent'))
 
-from wavlm_dialect import WavLMWrapper
-from whisper_dialect import WhisperWrapper
+from wavlm_accent import WavLMWrapper
 
 
 # define logging console
