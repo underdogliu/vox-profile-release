@@ -28,7 +28,11 @@ os.environ["OMP_NUM_THREADS"] = "1"
 if __name__ == '__main__':
 
     label_list = [
-        'British Isles', 'North America', 'Other'
+        'shrill', 'nasal', 'deep',  # Pitch
+        'silky', 'husky', 'raspy', 'guttural', 'vocal-fry', # Texture
+        'booming', 'authoritative', 'loud', 'hushed', 'soft', # Volume
+        'crisp', 'slurred', 'lisp', 'stammering', # Clarity
+        'singsong', 'pitchy', 'flowing', 'monotone', 'staccato', 'punctuated', 'enunciated',  'hesitant', # Rhythm
     ]
     
     # Find device
@@ -53,6 +57,7 @@ if __name__ == '__main__':
     wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_voice_quality_lora.pt")), strict=False)
     wavlm_model.eval()
 
+    # audio sample frequency is set to 16kHz
     data = torch.zeros([1, 16000]).to(device)
     wavlm_logits = wavlm_model(data, return_feature=False)
     print(wavlm_logits.shape)

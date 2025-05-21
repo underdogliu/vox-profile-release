@@ -25,45 +25,6 @@ os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1" 
 os.environ["OMP_NUM_THREADS"] = "1" 
 
-
-def parse_finetune_args():
-    # parser
-    parser = argparse.ArgumentParser(description='finetune experiments')
-    parser.add_argument(
-        '--num_layers',
-        default=1,
-        type=int,
-        help="num of layers",
-    )
-
-    parser.add_argument(
-        '--hidden_size',
-        default=256,
-        type=int,
-        help="hidden size",
-    )
-    parser.add_argument(
-        '--finetune_method', 
-        default='finetune',
-        type=str, 
-        help='finetune method: adapter, embedding prompt, lora'
-    )
-    
-    parser.add_argument(
-        '--lora_rank', 
-        default=16,
-        type=int, 
-        help='lora rank'
-    )
-
-    parser.add_argument(
-        '--dataset_rev', 
-        action='store_true',
-        help='reverse dataset'
-    )
-    args = parser.parse_args()
-    return args
-
 if __name__ == '__main__':
 
     label_list = [
