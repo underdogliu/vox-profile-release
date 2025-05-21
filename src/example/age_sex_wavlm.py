@@ -34,8 +34,6 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    # Define the model wrapper
-    wavlm_model_path = "YOUR_PATH"
     wavlm_model = WavLMWrapper(
         pretrain_model="wavlm_large", 
         finetune_method="lora",
@@ -45,14 +43,18 @@ if __name__ == '__main__':
         use_conv_output=True,
         apply_gradient_reversal=False,
         apply_reg=True
-    ).to(device)
+    )
 
-    wavlm_model.load_state_dict(torch.load(os.path.join(wavlm_model_path, f"wavlm_age_sex.pt"), weights_only=True), strict=False)
-    wavlm_model.load_state_dict(torch.load(os.path.join(wavlm_model_path, f"wavlm_age_sex_lora.pt")), strict=False)
-    
+    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-age-sex").to(device)
+    # wavlm_model.eval()
+
     # Audio must be 16k Hz
-    data = torch.zeros([1, 16000]).to(device)
+    data = torch.zeros([1, 16000]).float().to(device)
     wavlm_age_outputs, wavlm_sex_outputs = wavlm_model(data)
 
     # Age is between 0-100
     age_pred = wavlm_age_outputs.detach().cpu().numpy() * 100
+
+    sex_prob = F.softmax(wavlm_sex_outputs, dim=1)
+    print(sex_unique_labels[torch.argmax(sex_prob).detach().cpu().item()])
+    print(age_pred)
