@@ -14,8 +14,56 @@ In Vox-Profile, we experiments with over 15 publicly available datasets to predi
 </div>
 
 #### Quick start example:
+### Installation: comming soon
+```
+# The importing will be simplified after installation is done
+import torch
+import logging
+import sys, os, pdb
+import torch.nn.functional as F
 
-The example is under src/example/broad_accent_wavlm.py
+from pathlib import Path
+
+sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[0])))
+sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[0]), 'src', 'model', 'accent'))
+```
+### Model Loading (We will upload Whisper-based model to Huggingface shortly)
+```
+english_accent_list = [
+    'East Asia', 'English', 'Germanic', 'Irish', 
+    'North America', 'Northern Irish', 'Oceania', 
+    'Other', 'Romance', 'Scottish', 'Semitic', 'Slavic', 
+    'South African', 'Southeast Asia', 'South Asia', 'Welsh'
+]
+    
+# Find device
+device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
+
+# Define the model
+wavlm_model = WavLMWrapper(
+    pretrain_model="wavlm_large", 
+    finetune_method="lora",
+    lora_rank=16,
+    output_class_num=16,
+    freeze_params=True, 
+    use_conv_output=True,
+    apply_gradient_reversal=False,
+)
+
+# Load model from Huggingface
+wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
+wavlm_model.eval()
+
+# Load data, here just zeros as the example, audio data should be 16kHz mono channel
+data = torch.zeros([1, 16000]).float().to(device)
+wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
+    
+# Probability
+wavlm_prob = F.softmax(wavlm_logits, dim=1)
+accent_label = print(english_accent_list[torch.argmax(wavlm_prob).detach().cpu().item()])
+```
+
+Other example is also under example like src/example/broad_accent_wavlm.py
 Simply replace the model path with the model weights provided. The availabel labels are ['British Isles', 'North America', 'Other'].
 
 #### Given that the Vox-Profile Benchmark paper is still under peer-review, we provide limited set of models and model weights before the review is concluded. But below are the models we currently put out.
