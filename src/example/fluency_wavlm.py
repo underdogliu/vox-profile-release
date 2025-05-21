@@ -33,7 +33,7 @@ if __name__ == '__main__':
     
     fluency_label_list = [
         'Fluent', 
-        'Dysfluent'
+        'Disfluent'
     ]
 
     disfluency_type_labels = [
@@ -46,7 +46,6 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model, but this example is only about wavlm-large
-    # Define the model wrapper
     model_path = "model"
     # Define the model wrapper
     wavlm_model = WavLMWrapper(
@@ -83,7 +82,7 @@ if __name__ == '__main__':
         
     # Now lets gather the predictions for the utterance
     for audio_idx in range(audio_segment):
-        dysfluency_type = list()
+        disfluency_type = list()
         if fluency_prob[audio_idx][0] > 0.5: 
             utterance_fluency_list.append("Fluent")
         else: 
@@ -92,8 +91,8 @@ if __name__ == '__main__':
             predictions = disfluency_predictions[audio_idx]
             for label_idx in range(len(predictions)):
                 if predictions[label_idx] == 1: 
-                    dysfluency_type.append(disfluency_type_labels[label_idx])
-        utterance_disfluency_list.append(dysfluency_type)
+                    disfluency_type.append(disfluency_type_labels[label_idx])
+        utterance_disfluency_list.append(disfluency_type)
 
     # Now print how fluent is the utterance
     print(utterance_fluency_list)
