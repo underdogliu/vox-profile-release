@@ -50,14 +50,11 @@ if __name__ == '__main__':
         num_dataset=3
     ).to(device)
     
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_broader_accent.pt"), weights_only=True), strict=False)
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_broader_accent_lora.pt")), strict=False)
-    
+    wavlm_model.from_pretrained("tiantiaf/wavlm-large-broader-accent")
     wavlm_model.eval()
     
     data = torch.zeros([1, 16000]).to(device)
     wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
 
     # Probability of the prediction
-    wavlm_prob   = F.softmax(wavlm_logits, dim=1)
-    
+    wavlm_prob = F.softmax(wavlm_logits, dim=1)

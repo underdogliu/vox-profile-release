@@ -2,7 +2,6 @@ import os
 import pdb
 import copy
 import torch
-import argparse
 import loralib as lora
 import transformers.models.wavlm.modeling_wavlm as wavlm
 from speechbrain.nnet.normalization import LayerNorm
@@ -10,6 +9,7 @@ from speechbrain.lobes.models.huggingface_transformers.huggingface import make_p
 
 from torch import nn
 from torch.nn import functional as F
+from huggingface_hub import PyTorchModelHubMixin
 from transformers import Wav2Vec2FeatureExtractor
 from transformers import WavLMModel
 
@@ -17,52 +17,6 @@ import sys
 from pathlib import Path
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1])))
 from revgrad import RevGrad
-
-class WavLMEncoderLayer(nn.Module):
-    def __init__(self, layer_idx, config, has_relative_position_bias: bool = True):
-        super().__init__()
-        self.attention = wavlm.WavLMAttention(
-            embed_dim=config.hidden_size,
-            num_heads=config.num_attention_heads,
-            dropout=config.attention_dropout,
-            num_buckets=config.num_buckets,
-            max_distance=config.max_bucket_distance,
-            has_relative_position_bias=has_relative_position_bias,
-        )
-        self.dropout = nn.Dropout(config.hidden_dropout)
-        self.layer_norm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
-        self.feed_forward = wavlm.WavLMFeedForward(config)
-        self.final_layer_norm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
-        self.config = config
-        
-        if layer_idx > config.num_hidden_layers // 2:
-            if self.config.finetune_method == "lora" or self.config.finetune_method == "combined":
-                self.feed_forward.intermediate_dense    = lora.Linear(config.hidden_size, config.intermediate_size, r=config.lora_rank)
-                self.feed_forward.output_dense          = lora.Linear(config.intermediate_size, config.hidden_size, r=config.lora_rank)
-
-    def forward(self, hidden_states, attention_mask=None, position_bias=None, output_attentions=False, index=0):
-        
-        attn_residual = hidden_states
-        hidden_states, attn_weights, position_bias = self.attention(
-            hidden_states,
-            attention_mask=attention_mask,
-            position_bias=position_bias,
-            output_attentions=output_attentions,
-            index=index,
-        )
-        hidden_states = self.dropout(hidden_states)
-        hidden_states = attn_residual + hidden_states
-        
-        hidden_states = self.layer_norm(hidden_states)
-        hidden_states = hidden_states + self.feed_forward(hidden_states)
-        hidden_states = self.final_layer_norm(hidden_states)
-        outputs = (hidden_states, position_bias)
-
-        if output_attentions:
-            outputs += (attn_weights,)
-
-        return outputs
-
 
 class WavLMEncoderLayerStableLayerNorm(nn.Module):
     def __init__(self, layer_idx, config, has_relative_position_bias: bool = True):
@@ -108,7 +62,11 @@ class WavLMEncoderLayerStableLayerNorm(nn.Module):
         return outputs
 
    
-class WavLMWrapper(nn.Module):
+class WavLMWrapper(
+    nn.Module,
+    PyTorchModelHubMixin, 
+    repo_url="https://github.com/tiantiaf0627/vox-profile-release"
+):
     def __init__(
         self, 
         pretrain_model="wavlm_large", 
@@ -146,11 +104,7 @@ class WavLMWrapper(nn.Module):
         self.model_config.lora_rank              = lora_rank
         
         # 3. Config encoder layers with adapter or embedding prompt
-        if self.pretrain_model == "wavlm":
-            self.backbone_model.encoder.layers = nn.ModuleList(
-                [WavLMEncoderLayer(i, self.model_config, has_relative_position_bias=(i == 0)) for i in range(self.model_config.num_hidden_layers)]
-            )
-        elif self.pretrain_model == "wavlm_large":
+        if self.pretrain_model == "wavlm_large":
             self.backbone_model.encoder.layers = nn.ModuleList(
                 [WavLMEncoderLayerStableLayerNorm(i, self.model_config, has_relative_position_bias=(i == 0)) for i in range(self.model_config.num_hidden_layers)]
             )
@@ -285,16 +239,3 @@ class WavLMWrapper(nn.Module):
         for kernel_size, stride in zip(self.backbone_model.config.conv_kernel, self.backbone_model.config.conv_stride):
             input_length = _conv_out_length(input_length, kernel_size, stride)
         return input_length
-
-def prepare_mask(length, shape, dtype):
-    # Modified from huggingface
-    mask = torch.zeros(
-        shape, dtype=dtype
-    )
-    # these two operations makes sure that all values
-    # before the output lengths indices are attended to
-    mask[(torch.arange(mask.shape[0]), length.cpu() - 1)] = 1
-    mask = mask.flip([-1]).cumsum(-1).flip([-1]).bool()
-    return mask
-    
-    
