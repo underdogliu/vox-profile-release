@@ -48,9 +48,9 @@ if __name__ == '__main__':
         use_conv_output=True,
         apply_gradient_reversal=False, 
         num_dataset=3
-    ).to(device)
+    )
     
-    wavlm_model.from_pretrained("tiantiaf/wavlm-large-broader-accent")
+    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-broader-accent").to(device)
     wavlm_model.eval()
     
     data = torch.zeros([1, 16000]).to(device)

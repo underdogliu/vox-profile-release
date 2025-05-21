@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1])))
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'accent'))
 
-from wavlm_dialect import WavLMWrapper
+from wavlm_accent import WavLMWrapper
 
 # define logging console
 import logging
@@ -39,10 +39,7 @@ if __name__ == '__main__':
     if torch.cuda.is_available(): print('GPU available, use GPU')
 
     # Define the model
-    # Note that ensemble yields the better performance than the single model
-    model_path = "YOUR_PATH"
-    # Define the model wrapper
-    wavlm_model = model = WavLMWrapper(
+    wavlm_model = WavLMWrapper(
         pretrain_model="wavlm_large", 
         finetune_method="lora",
         lora_rank=16,
@@ -51,10 +48,9 @@ if __name__ == '__main__':
         use_conv_output=True,
         apply_gradient_reversal=False, 
         num_dataset=3
-    ).to(device)
+    )
     
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_narrow_accent.pt"), weights_only=True), strict=False)
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_narrow_accent_lora.pt")), strict=False)
+    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
     wavlm_model.eval()
         
     data = torch.zeros([1, 16000]).to(device)

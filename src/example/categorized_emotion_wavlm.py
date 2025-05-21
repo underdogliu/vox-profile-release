@@ -44,8 +44,6 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    # Define the model wrapper
-    model_path = "model"
     wavlm_model = WavLMWrapper(
         pretrain_model="wavlm_large", 
         finetune_method="finetune",
@@ -53,14 +51,14 @@ if __name__ == '__main__':
         freeze_params=True, 
         use_conv_output=True,
         detailed_class_num=17
-    ).to(device)
+    )
         
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_emotion.pt"), weights_only=True), strict=False)
+    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-categorical-emotion").to(device)
     wavlm_model.eval()
     
     # Audio must be 16k Hz
-    data = torch.zeros([1, 16000]).to(device)
-    wavlm_logits, wavlm_embedding, _, _, _, _       = wavlm_model(
+    data = torch.zeros([1, 16000]).float().to(device)
+    wavlm_logits, wavlm_embedding, _, _, _, _ = wavlm_model(
         data, return_feature=True
     )
     
@@ -69,4 +67,5 @@ if __name__ == '__main__':
     print(emotion_prob.shape)
     print(wavlm_embedding.shape)
     print(label_list[torch.argmax(emotion_prob).detach().cpu().item()])
+    pdb.set_trace()
 

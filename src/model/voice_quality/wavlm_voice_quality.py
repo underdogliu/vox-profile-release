@@ -9,6 +9,7 @@ from speechbrain.lobes.models.huggingface_transformers.huggingface import make_p
 
 from torch import nn
 from torch.nn import functional as F
+from huggingface_hub import PyTorchModelHubMixin
 from transformers import Wav2Vec2FeatureExtractor
 from transformers import WavLMModel
 
@@ -126,7 +127,11 @@ class WavLMEncoderLayerStableLayerNorm(nn.Module):
         return outputs
 
    
-class WavLMWrapper(nn.Module):
+class WavLMWrapper(
+    nn.Module,
+    PyTorchModelHubMixin, 
+    repo_url="https://github.com/tiantiaf0627/vox-profile-release"
+):
     def __init__(
         self, 
         pretrain_model="wavlm_large", 
