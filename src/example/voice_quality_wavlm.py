@@ -1,5 +1,6 @@
 import torch
 import sys, os, pdb
+import torch.nn as nn
 import argparse, logging
 import torch.nn.functional as F
 
@@ -60,5 +61,10 @@ if __name__ == '__main__':
     # audio sample frequency is set to 16kHz
     data = torch.zeros([1, 16000]).to(device)
     wavlm_logits = wavlm_model(data, return_feature=False)
-    print(wavlm_logits.shape)
+    wavlm_prob = nn.Sigmoid()(torch.tensor(wavlm_logits))
+    
+    # In practice, a larger threshold would remove some noise, but it is best to aggregate prediction per speaker
+    threshold = 0.5
+    predictions = (wavlm_prob > threshold).int().detach().cpu().numpy()[0].tolist()
+    print(wavlm_prob.shape)
 

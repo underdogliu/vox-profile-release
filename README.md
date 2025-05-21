@@ -22,12 +22,12 @@ Simply replace the model path with the model weights provided. The availabel lab
 
  Model Name  | Data  | Pre-trained Model | Use LoRa |  LoRa Rank Size  | Output | Example Code |
 |--------------------------------------------------------|-------|-----------------|-----------------|-------------|------------------------|------------------------|
-| [wavlm-large-sex-age](https://drive.google.com/drive/folders/1PQwQVXNg_RKK9AN6wHO4TB4AIhxY_1i4?usp=sharing)   | CommonVoice+Timit+Voxceleb(age enriched) | wavlm-large              | Yes              | 16              | Sex (2-class)/Age (0-1)*100 Years  | 
-| [wavlm-large-broader-accent](https://drive.google.com/drive/folders/1v2_uUQ-q_CJ2vgtVNLiiwgWvCcEJDiRw?usp=sharing)   | See Paper (11 Datasets in Total) | wavlm-large              | Yes              | 16              | North American/British/Other (3-class)  | 
-| [wavlm-large-narrow-accent](https://drive.google.com/drive/folders/12Mpn7aGj3ig8gvjiYTxUpXaNDISWoXOd?usp=sharing)   | See Paper (11 Datasets in Total) | wavlm-large              | Yes              | 16              | See example  |
-| [wavlm-large-voice-quality](https://drive.google.com/drive/folders/1kqenJz58Ws_vU9GZuscuJ9u9kHXcTtKn?usp=sharing)   | ParaSpeechCaps | wavlm-large              | Yes              | 16              | See example  |
-| [wavlm-large-influency](https://drive.google.com/drive/folders/1AQT-o3XIqXvJ34j5n6j6BOEslMan-yQ3?usp=sharing)   | SEP28K+FluencyBank | wavlm-large              | Yes              | 16              | Fluent/Disfluent (Specified Disfluency Types)  |
-| [wavlm-large-categorical-emotion]()   | MSP-Podcast | wavlm-large              | Yes              | 16              | 8 Emotions + Other  |
+| [wavlm-large-sex-age](https://drive.google.com/drive/folders/1PQwQVXNg_RKK9AN6wHO4TB4AIhxY_1i4?usp=sharing)   | CommonVoice+Timit+Voxceleb (age enriched) | wavlm-large              | Yes              | 16              | Sex (2-class) / Age (0-1)*100 Years  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/age_sex_wavlm.py) |
+| [wavlm-large-broader-accent](https://drive.google.com/drive/folders/1v2_uUQ-q_CJ2vgtVNLiiwgWvCcEJDiRw?usp=sharing)   | See Paper (11 Datasets) | wavlm-large              | Yes              | 16              | North American / British / Other (3-class)  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/broad_accent_wavlm.py) |
+| [wavlm-large-narrow-accent](https://drive.google.com/drive/folders/12Mpn7aGj3ig8gvjiYTxUpXaNDISWoXOd?usp=sharing)   | See Paper (11 Datasets) | wavlm-large              | Yes              | 16              | See example  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/narrow_accent_wavlm.py) |
+| [wavlm-large-voice-quality](https://drive.google.com/drive/folders/1kqenJz58Ws_vU9GZuscuJ9u9kHXcTtKn?usp=sharing)   | ParaSpeechCaps | wavlm-large              | Yes              | 16              | See example  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/voice_quality_wavlm.py) |
+| [wavlm-large-influency](https://drive.google.com/drive/folders/1AQT-o3XIqXvJ34j5n6j6BOEslMan-yQ3?usp=sharing)   | SEP28K+FluencyBank | wavlm-large              | Yes              | 16              | Fluent/Disfluent (Specified Disfluency Types)  | [Example]() |
+| [wavlm-large-categorical-emotion]()   | MSP-Podcast | wavlm-large              | Yes              | 16              | 8 Emotions + Other  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/categorized_emotion_wavlm.py) |
 
 
 ### Enabling Versatile Speech Applications with Vox-Profile
