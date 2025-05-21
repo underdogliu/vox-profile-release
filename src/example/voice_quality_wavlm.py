@@ -42,8 +42,6 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    model_path = "model"
-    # Define the model wrapper
     wavlm_model = WavLMWrapper(
         pretrain_model="wavlm_large", 
         hidden_dim=256,
@@ -54,12 +52,11 @@ if __name__ == '__main__':
         percept="complete"
     ).to(device)
     
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_voice_quality.pt"), weights_only=True), strict=False)
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_voice_quality_lora.pt")), strict=False)
+    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-voice-quality").to(device)
     wavlm_model.eval()
 
     # audio sample frequency is set to 16kHz
-    data = torch.zeros([1, 16000]).to(device)
+    data = torch.zeros([1, 16000]).float().to(device)
     wavlm_logits = wavlm_model(data, return_feature=False)
     wavlm_prob = nn.Sigmoid()(torch.tensor(wavlm_logits))
     

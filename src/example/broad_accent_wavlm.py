@@ -53,7 +53,7 @@ if __name__ == '__main__':
     wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-broader-accent").to(device)
     wavlm_model.eval()
     
-    data = torch.zeros([1, 16000]).to(device)
+    data = torch.zeros([1, 16000]).float().to(device)
     wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
 
     # Probability of the prediction

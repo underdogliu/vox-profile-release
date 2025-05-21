@@ -46,8 +46,6 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model, but this example is only about wavlm-large
-    model_path = "model"
-    # Define the model wrapper
     wavlm_model = WavLMWrapper(
         pretrain_model="wavlm_large", 
         finetune_method="lora",
@@ -56,15 +54,14 @@ if __name__ == '__main__':
         use_conv_output=True
     ).to(device)
 
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_fluency.pt"), weights_only=True), strict=False)
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_fluency_lora.pt")), strict=False)
+    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-speech-flow").to(device)
     wavlm_model.eval()
-    
+
     utterance_fluency_list = list()
     utterance_disfluency_list = list()
 
     # The way we do inference for fluency is different as the training data is 3s, so we need to do some shifting
-    audio_data = torch.zeros([1, 16000*10]).to(device)
+    audio_data = torch.zeros([1, 16000*10]).float().to(device)
     audio_segment = (audio_data.shape[1] - 3*16000) // 16000 + 1
     if audio_segment < 1: audio_segment = 1
     input_audio = list()
