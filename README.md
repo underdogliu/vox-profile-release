@@ -1,13 +1,13 @@
 ## Vox-Profile: A Speech Foundation Model Benchmark for Characterizing Diverse Speaker and Speech Traits
 
-#### In this repo, we present Vox-Profile, one of the first benchmarking efforts that systematically evaluate rich multi-dimensional speaker and speech traits from English-speaking voices. Overall, our benchmark is presented below:
+#### In this repo, we present Vox-Profile [[Paper Link](https://arxiv.org/pdf/2505.14648)], one of the first benchmarking efforts that systematically evaluate rich multi-dimensional speaker and speech traits from English-speaking voices. Our benchmark is presented below:
 
 <div align="center">
  <img src="img/vox-profile.png" width="800px">
 </div>
 
 
-In Vox-Profile, we experiments with over 15 publicly available datasets to predict static traits (speaker age, speaker sex, speaker accent, and voice quality) and dynamic traits (speech emotion, speech flow, and speech expressiveness) in different recording conditions and elicitation settings (e.g., read, spontaneous, and conversational speech). We integrates linguistically informed taxonomy to better address the inherently subjective nature of these trait and inconsistent experimental conditions across literature. Our labeling taxonomy is described below:
+In Vox-Profile, we experiments with over 15 publicly available datasets to predict static traits (speaker age, speaker sex, speaker accent, and voice quality) and dynamic traits (speech emotion, speech flow, and speech expressiveness) in different recording conditions and elicitation settings (e.g., read, spontaneous, and conversational speech). Our labeling taxonomy is described below:
 
 <div align="center">
  <img src="img/label_mapping.png" width="400px">
@@ -15,7 +15,7 @@ In Vox-Profile, we experiments with over 15 publicly available datasets to predi
 
 #### Quick start example:
 
-The example is under src/example/accent_us_uk_other.py
+The example is under src/example/broad_accent_wavlm.py
 Simply replace the model path with the model weights provided. The availabel labels are ['British Isles', 'North America', 'Other'].
 
 #### Given that the Vox-Profile Benchmark paper is still under peer-review, we provide limited set of models and model weights before the review is concluded. But below are the models we currently put out.
@@ -44,7 +44,7 @@ We generate speaker and speech traits for existing datasets and investigate whet
 
 #### 2. Automated Evaluation Tool for Speech Generation Tasks
 
-We demonstrate the utility of Vox-Profile as an evaluation tool for speech generation tasks by comparing two representative models: FreeVC and VALLE-X. As shown in Table below, the accent prediction scores and the cosine similarity for the synthesized samples from FreeVC suggest greater similarity to the source speaker’s accent than to the reference speaker. In contrast, the scores for VALLE-X indicate closer alignment with the reference speaker’s accent in most conditions. These findings are consistent with previous studies, which report that FreeVC has limited capability in replicating the accentual features of the reference speaker, whereas VALLE-X, due to its intermediate text-based representation, more effectively preserves these features
+We demonstrate the utility of Vox-Profile as an evaluation tool for speech generation tasks by comparing two representative models: FreeVC and VALLE-X. As shown in Table below, the accent prediction scores and the cosine similarity for the synthesized samples from FreeVC suggest greater similarity to the source speaker’s accent than to the reference speaker. In contrast, the scores for VALLE-X indicate closer alignment with the reference speaker’s accent in most conditions. These findings are consistent with previous studies, which report that FreeVC has limited capability in replicating the accentual features of the reference speaker compare to VALLE-X.
 
 <div align="center">
  <img src="img/vc_evaluation.png" width="800px">
