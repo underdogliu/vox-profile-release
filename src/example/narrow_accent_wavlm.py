@@ -9,8 +9,7 @@ from pathlib import Path
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1])))
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'accent'))
 
-from wavlm_accent import WavLMWrapper
-
+from wavlm_dialect import WavLMWrapper
 
 # define logging console
 import logging
@@ -27,8 +26,12 @@ os.environ["OMP_NUM_THREADS"] = "1"
 
 if __name__ == '__main__':
 
+   
     label_list = [
-        'British Isles', 'North America', 'Other'
+        'East Asia', 'English', 'Germanic', 'Irish', 
+        'North America', 'Northern Irish', 'Oceania', 
+        'Other', 'Romance', 'Scottish', 'Semitic', 'Slavic', 
+        'South African', 'Southeast Asia', 'South Asia', 'Welsh'
     ]
     
     # Find device
@@ -37,27 +40,26 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    model_path = "model"
+    model_path = "YOUR_PATH"
     # Define the model wrapper
-    wavlm_model = WavLMWrapper(
+    wavlm_model = model = WavLMWrapper(
         pretrain_model="wavlm_large", 
         finetune_method="lora",
         lora_rank=16,
-        output_class_num=3,
-        freeze_params=False, 
+        output_class_num=16,
+        freeze_params=True, 
         use_conv_output=True,
         apply_gradient_reversal=False, 
         num_dataset=3
     ).to(device)
     
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_broader_accent.pt"), weights_only=True), strict=False)
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_broader_accent_lora.pt")), strict=False)
-    
+    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_narrow_accent.pt"), weights_only=True), strict=False)
+    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_narrow_accent_lora.pt")), strict=False)
     wavlm_model.eval()
-    
+        
     data = torch.zeros([1, 16000]).to(device)
     wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
-
-    # Probability of the prediction
-    wavlm_prob   = F.softmax(wavlm_logits, dim=1)
+    
+    # Probability
+    wavlm_prob = F.softmax(wavlm_logits, dim=1)
     

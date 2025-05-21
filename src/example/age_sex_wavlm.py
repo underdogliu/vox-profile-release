@@ -7,10 +7,9 @@ from pathlib import Path
 
 
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1])))
-sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'accent'))
+sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'age_sex'))
 
-from wavlm_accent import WavLMWrapper
-
+from wavlm_demographics import WavLMWrapper
 
 # define logging console
 import logging
@@ -27,37 +26,33 @@ os.environ["OMP_NUM_THREADS"] = "1"
 
 if __name__ == '__main__':
 
-    label_list = [
-        'British Isles', 'North America', 'Other'
-    ]
-    
+    sex_unique_labels = ["Female", "Male"]
+
     # Find device
     device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
     if torch.cuda.is_available(): print('GPU available, use GPU')
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    model_path = "model"
     # Define the model wrapper
+    wavlm_model_path = "YOUR_PATH"
     wavlm_model = WavLMWrapper(
         pretrain_model="wavlm_large", 
         finetune_method="lora",
         lora_rank=16,
-        output_class_num=3,
-        freeze_params=False, 
+        output_class_num=2,
+        freeze_params=True, 
         use_conv_output=True,
-        apply_gradient_reversal=False, 
-        num_dataset=3
+        apply_gradient_reversal=False,
+        apply_reg=True
     ).to(device)
-    
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_broader_accent.pt"), weights_only=True), strict=False)
-    wavlm_model.load_state_dict(torch.load(os.path.join(model_path, f"wavlm_broader_accent_lora.pt")), strict=False)
-    
-    wavlm_model.eval()
-    
-    data = torch.zeros([1, 16000]).to(device)
-    wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
 
-    # Probability of the prediction
-    wavlm_prob   = F.softmax(wavlm_logits, dim=1)
+    wavlm_model.load_state_dict(torch.load(os.path.join(wavlm_model_path, f"wavlm_age_sex.pt"), weights_only=True), strict=False)
+    wavlm_model.load_state_dict(torch.load(os.path.join(wavlm_model_path, f"wavlm_age_sex_lora.pt")), strict=False)
     
+    # Audio must be 16k Hz
+    data = torch.zeros([1, 16000]).to(device)
+    wavlm_age_outputs, wavlm_sex_outputs = wavlm_model(data)
+
+    # Age is between 0-100
+    age_pred = wavlm_age_outputs.detach().cpu().numpy() * 100

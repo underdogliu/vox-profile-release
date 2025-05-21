@@ -20,10 +20,10 @@ Simply replace the model path with the model weights provided. The availabel lab
 
 #### Given that the Vox-Profile Benchmark paper is still under peer-review, we provide limited set of models and model weights before the review is concluded. But below are the models we currently put out.
 
- Model Name  | Data  | Pre-trained Model | Use LoRa |  LoRa Rank Size  | Output | 
-|---------------------------------------------------------------------------------------------------|-------|-----------------|-----------------|-------------|------------------------|
+ Model Name  | Data  | Pre-trained Model | Use LoRa |  LoRa Rank Size  | Output | Example Code |
+|--------------------------------------------------------|-------|-----------------|-----------------|-------------|------------------------|------------------------|
 | [wavlm-large-sex-age](https://drive.google.com/drive/folders/1PQwQVXNg_RKK9AN6wHO4TB4AIhxY_1i4?usp=sharing)   | CommonVoice+Timit+Voxceleb(age enriched) | wavlm-large              | Yes              | 16              | Sex (2-class)/Age (0-1)*100 Years  | 
-| [wavlm-large-broader-accent](https://drive.google.com/drive/folders/1v2_uUQ-q_CJ2vgtVNLiiwgWvCcEJDiRw?usp=sharing)   | See Paper (11 Datasets in Total) | wavlm-large              | Yes              | 16              | North American/Brithis/Other (3-class)  | 
+| [wavlm-large-broader-accent](https://drive.google.com/drive/folders/1v2_uUQ-q_CJ2vgtVNLiiwgWvCcEJDiRw?usp=sharing)   | See Paper (11 Datasets in Total) | wavlm-large              | Yes              | 16              | North American/British/Other (3-class)  | 
 | [wavlm-large-narrow-accent](https://drive.google.com/drive/folders/12Mpn7aGj3ig8gvjiYTxUpXaNDISWoXOd?usp=sharing)   | See Paper (11 Datasets in Total) | wavlm-large              | Yes              | 16              | See example  |
 | [wavlm-large-voice-quality](https://drive.google.com/drive/folders/1kqenJz58Ws_vU9GZuscuJ9u9kHXcTtKn?usp=sharing)   | ParaSpeechCaps | wavlm-large              | Yes              | 16              | See example  |
 | [wavlm-large-influency](https://drive.google.com/drive/folders/1AQT-o3XIqXvJ34j5n6j6BOEslMan-yQ3?usp=sharing)   | SEP28K+FluencyBank | wavlm-large              | Yes              | 16              | Fluent/Disfluent (Specified Disfluency Types)  |
