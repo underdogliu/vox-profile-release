@@ -26,8 +26,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 
 if __name__ == '__main__':
 
-   
-    label_list = [
+    english_accent_list = [
         'East Asia', 'English', 'Germanic', 'Irish', 
         'North America', 'Northern Irish', 'Oceania', 
         'Other', 'Romance', 'Scottish', 'Semitic', 'Slavic', 
@@ -39,14 +38,15 @@ if __name__ == '__main__':
     if torch.cuda.is_available(): print('GPU available, use GPU')
 
     # Define the model
-    wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
-    wavlm_model.eval()
+    model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
+    model.eval()
 
     # Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation)
     # So you need to prepare your audio to a maximum of 15 seconds, 16kHz and mono channel 
     data = torch.zeros([1, 16000]).float().to(device)
-    wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
+    logits, embeddings = model(data, return_feature=True)
     
     # Probability
-    wavlm_prob = F.softmax(wavlm_logits, dim=1)
+    accent_prob = F.softmax(logits, dim=1)
+    accent_label = print(english_accent_list[torch.argmax(accent_prob).detach().cpu().item()])
     
