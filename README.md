@@ -7,12 +7,6 @@
 </div>
 
 
-In Vox-Profile, we experiments with over 15 publicly available datasets to predict static traits (speaker age, speaker sex, speaker accent, and voice quality) and dynamic traits (speech emotion, speech flow, and speech expressiveness) in different recording conditions and elicitation settings (e.g., read, spontaneous, and conversational speech). Our labeling taxonomy is described below:
-
-<div align="center">
- <img src="img/label_mapping.png" width="400px">
-</div>
-
 #### Quick start example:
 ### Installation: comming soon
 ```
@@ -68,6 +62,8 @@ Simply replace the model path with the model weights provided. The availabel lab
 
 #### Given that the Vox-Profile Benchmark paper is still under peer-review, we provide limited set of models and model weights before the review is concluded. But below are the models we currently put out.
 
+### WavLM-Large Models
+
  Model Name  | Data  | Pre-trained Model | Use LoRa |  LoRa Rank Size  | Output | Example Code |
 |--------------------------------------------------------|-------|-----------------|-----------------|-------------|------------------------|------------------------|
 | [wavlm-large-sex-age](https://huggingface.co/tiantiaf/wavlm-large-age-sex)   | CommonVoice+Timit+Voxceleb (age enriched) | wavlm-large              | Yes              | 16              | Sex (2-class) / Age (0-1)*100 Years  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/age_sex_wavlm.py) |
@@ -77,6 +73,19 @@ Simply replace the model path with the model weights provided. The availabel lab
 | [wavlm-large-influency](https://huggingface.co/tiantiaf/wavlm-large-speech-flow)   | SEP28K+FluencyBank | wavlm-large              | Yes              | 16              | Fluent/Disfluent (Specified Disfluency Types)  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/fluency_wavlm.py) |
 | [wavlm-large-categorical-emotion](https://huggingface.co/tiantiaf/wavlm-large-categorical-emotion)   | MSP-Podcast | wavlm-large              | No              | NA              | 8 Emotions + Other  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/categorized_emotion_wavlm.py) |
 
+
+### Whisper-Large V3 Models
+Model Name  | Data  | Pre-trained Model | Use LoRa |  LoRa Rank Size  | Output | Example Code |
+|--------------------------------------------------------|-------|-----------------|-----------------|-------------|------------------------|------------------------|
+| [whisper-large-categorical-emotion](https://huggingface.co/tiantiaf/whisper-large-v3-msp-podcast-emotion)   | MSP-Podcast | whisper-large              | Yes              | 16              | 8 Emotions + Other  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/categorized_emotion_whisper.py) |
+
+
+### Labeling Scheme
+In Vox-Profile, we experiments with over 15 publicly available datasets to predict static traits (speaker age, speaker sex, speaker accent, and voice quality) and dynamic traits (speech emotion, speech flow, and speech expressiveness) in different recording conditions and elicitation settings (e.g., read, spontaneous, and conversational speech). Our labeling taxonomy is described below:
+
+<div align="center">
+ <img src="img/label_mapping.png" width="400px">
+</div>
 
 ### Enabling Versatile Speech Applications with Vox-Profile
 
