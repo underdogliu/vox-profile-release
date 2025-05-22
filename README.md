@@ -18,7 +18,7 @@ cd vox-profile-release
 pip install -e .
 ```
 
-### Quick Example - WavLM Large Broad Accent
+### Quick Example - WavLM Large Narrow Accent
 ```
 # Load libraries
 import torch
