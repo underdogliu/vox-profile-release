@@ -4,7 +4,6 @@ import copy
 import torch
 import loralib as lora
 import transformers.models.wavlm.modeling_wavlm as wavlm
-from speechbrain.nnet.normalization import LayerNorm
 from speechbrain.lobes.models.huggingface_transformers.huggingface import make_padding_masks
 
 from torch import nn
