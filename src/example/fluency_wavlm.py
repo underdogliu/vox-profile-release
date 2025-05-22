@@ -46,15 +46,7 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model, but this example is only about wavlm-large
-    wavlm_model = WavLMWrapper(
-        pretrain_model="wavlm_large", 
-        finetune_method="lora",
-        lora_rank=16,
-        freeze_params=True,
-        use_conv_output=True
-    ).to(device)
-
-    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-speech-flow").to(device)
+    wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-speech-flow").to(device)
     wavlm_model.eval()
 
     utterance_fluency_list = list()

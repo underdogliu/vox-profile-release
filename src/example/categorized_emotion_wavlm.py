@@ -44,16 +44,7 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    wavlm_model = WavLMWrapper(
-        pretrain_model="wavlm_large", 
-        finetune_method="finetune",
-        output_class_num=9,
-        freeze_params=True, 
-        use_conv_output=True,
-        detailed_class_num=17
-    )
-        
-    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-categorical-emotion").to(device)
+    wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-categorical-emotion").to(device)
     wavlm_model.eval()
     
     # Audio must be 16k Hz

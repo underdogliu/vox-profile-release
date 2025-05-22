@@ -42,17 +42,7 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    wavlm_model = WavLMWrapper(
-        pretrain_model="wavlm_large", 
-        hidden_dim=256,
-        finetune_method="lora",
-        lora_rank=16,
-        freeze_params=True,
-        use_conv_output=True,
-        percept="complete"
-    ).to(device)
-    
-    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-voice-quality").to(device)
+    wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-voice-quality").to(device)
     wavlm_model.eval()
 
     # audio sample frequency is set to 16kHz
@@ -60,7 +50,7 @@ if __name__ == '__main__':
     wavlm_logits = wavlm_model(data, return_feature=False)
     wavlm_prob = nn.Sigmoid()(torch.tensor(wavlm_logits))
     
-    # In practice, a larger threshold would remove some noise, but it is best to aggregate prediction per speaker
+    # In practice, a larger threshold would remove some noise, but it is best to aggregate predictions per speaker
     threshold = 0.5
     predictions = (wavlm_prob > threshold).int().detach().cpu().numpy()[0].tolist()
     print(wavlm_prob.shape)

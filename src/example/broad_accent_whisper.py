@@ -7,9 +7,9 @@ from pathlib import Path
 
 
 sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1])))
-sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'age_sex'))
+sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[1]), 'model', 'accent'))
 
-from wavlm_demographics import WavLMWrapper
+from whisper_accent import WhisperWrapper
 
 # define logging console
 import logging
@@ -26,24 +26,22 @@ os.environ["OMP_NUM_THREADS"] = "1"
 
 if __name__ == '__main__':
 
-    sex_unique_labels = ["Female", "Male"]
-
+    english_accent_list = [
+        'British Isles', 'North America', 'Other'
+    ]
+    
     # Find device
     device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
     if torch.cuda.is_available(): print('GPU available, use GPU')
 
     # Define the model
-    # Note that ensemble yields the better performance than the single model
-    wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-age-sex").to(device)
-    # wavlm_model.eval()
-
-    # Audio must be 16k Hz
+    model = WhisperWrapper.from_pretrained("tiantiaf/whisper-large-v3-broad-accent").to(device)
+    model.eval()
+        
     data = torch.zeros([1, 16000]).float().to(device)
-    wavlm_age_outputs, wavlm_sex_outputs = wavlm_model(data)
-
-    # Age is between 0-100
-    age_pred = wavlm_age_outputs.detach().cpu().numpy() * 100
-
-    sex_prob = F.softmax(wavlm_sex_outputs, dim=1)
-    print(sex_unique_labels[torch.argmax(sex_prob).detach().cpu().item()])
-    print(age_pred)
+    logits, embeddings = model(data, return_feature=True)
+    
+    # Probability
+    accent_prob = F.softmax(logits, dim=1)
+    print(english_accent_list[torch.argmax(accent_prob).detach().cpu().item()])
+    

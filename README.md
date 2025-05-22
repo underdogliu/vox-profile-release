@@ -46,7 +46,7 @@ wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
     
 # Probability and output
 wavlm_prob = F.softmax(wavlm_logits, dim=1)
-accent_label = print(english_accent_list[torch.argmax(wavlm_prob).detach().cpu().item()])
+print(english_accent_list[torch.argmax(wavlm_prob).detach().cpu().item()])
 ```
 
 #### Given that the Vox-Profile Benchmark paper is still under peer-review, we provide limited set of models and model weights before the review is concluded. But below are the models we currently put out.
@@ -66,7 +66,9 @@ accent_label = print(english_accent_list[torch.argmax(wavlm_prob).detach().cpu()
 ### Whisper-Large V3 Models
 Model Name  | Data  | Pre-trained Model | Use LoRa |  LoRa Rank Size  | Output | Example Code |
 |--------------------------------------------------------|-------|-----------------|-----------------|-------------|------------------------|------------------------|
-| [whisper-large-categorical-emotion](https://huggingface.co/tiantiaf/whisper-large-v3-msp-podcast-emotion)   | MSP-Podcast | whisper-large              | Yes              | 16              | 8 Emotions + Other  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/categorized_emotion_whisper.py) |
+| [whisper-large-v3-broader-accent](https://huggingface.co/tiantiaf/whisper-large-v3-broad-accent)   | See Paper (11 Datasets) | whisper-large v3              | Yes              | 16              | North American / British / Other (3-class)  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/broad_accent_whisper.py) |
+| [whisper-large-v3-narrow-accent](https://huggingface.co/tiantiaf/whisper-large-v3-narrow-accent)   | See Paper (11 Datasets) | whisper-large v3             | Yes              | 16              | See example  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/narrow_accent_whisper.py) |
+| [whisper-large-v3-categorical-emotion](https://huggingface.co/tiantiaf/whisper-large-v3-msp-podcast-emotion)   | MSP-Podcast | whisper-large v3             | Yes              | 16              | 8 Emotions + Other  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/categorized_emotion_whisper.py) |
 
 
 ### Labeling Scheme

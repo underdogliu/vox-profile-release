@@ -45,17 +45,7 @@ if __name__ == '__main__':
 
     # Define the model
     # Note that ensemble yields the better performance than the single model
-    model = WhisperWrapper(
-        pretrain_model="whisper_large", 
-        finetune_method="lora",
-        lora_rank=16, 
-        output_class_num=9,
-        freeze_params=True, 
-        use_conv_output=True,
-        detailed_class_num=17
-    ).to(device)
-        
-    model = model.from_pretrained("tiantiaf/whisper-large-v3-msp-podcast-emotion").to(device)
+    model = WhisperWrapper.from_pretrained("tiantiaf/whisper-large-v3-msp-podcast-emotion").to(device)
     model.eval()
     
     # Audio must be 16k Hz

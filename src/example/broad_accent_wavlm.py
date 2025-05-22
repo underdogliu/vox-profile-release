@@ -39,18 +39,7 @@ if __name__ == '__main__':
     # Note that ensemble yields the better performance than the single model
     model_path = "model"
     # Define the model wrapper
-    wavlm_model = WavLMWrapper(
-        pretrain_model="wavlm_large", 
-        finetune_method="lora",
-        lora_rank=16,
-        output_class_num=3,
-        freeze_params=False, 
-        use_conv_output=True,
-        apply_gradient_reversal=False, 
-        num_dataset=3
-    )
-    
-    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-broader-accent").to(device)
+    wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-broader-accent").to(device)
     wavlm_model.eval()
     
     data = torch.zeros([1, 16000]).float().to(device)

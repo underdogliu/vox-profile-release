@@ -39,18 +39,7 @@ if __name__ == '__main__':
     if torch.cuda.is_available(): print('GPU available, use GPU')
 
     # Define the model
-    wavlm_model = WavLMWrapper(
-        pretrain_model="wavlm_large", 
-        finetune_method="lora",
-        lora_rank=16,
-        output_class_num=16,
-        freeze_params=True, 
-        use_conv_output=True,
-        apply_gradient_reversal=False, 
-        num_dataset=3
-    )
-    
-    wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
+    wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
     wavlm_model.eval()
         
     data = torch.zeros([1, 16000]).float().to(device)
