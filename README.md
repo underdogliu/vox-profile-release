@@ -6,23 +6,26 @@
  <img src="img/vox-profile.png" width="800px">
 </div>
 
-
-#### Quick start example:
-### Installation: comming soon
+### Download Repo
 ```
-# The importing will be simplified after installation is done
+git clone git@github.com:tiantiaf0627/vox-profile-release.git
+```
+
+### Installation
+```
+conda create -n vox_profile python=3.8
+cd vox-profile-release
+pip install -e .
+```
+
+### Quick Example - WavLM Large Broad Accent
+```
+# Load libraries
 import torch
-import logging
-import sys, os, pdb
 import torch.nn.functional as F
+from src.model.accent.wavlm_accent import WavLMWrapper
 
-from pathlib import Path
-
-sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[0])))
-sys.path.append(os.path.join(str(Path(os.path.realpath(__file__)).parents[0]), 'src', 'model', 'accent'))
-```
-### Model Loading (We will upload Whisper-based model to Huggingface shortly)
-```
+# Label List
 english_accent_list = [
     'East Asia', 'English', 'Germanic', 'Irish', 
     'North America', 'Northern Irish', 'Oceania', 
@@ -33,32 +36,18 @@ english_accent_list = [
 # Find device
 device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
 
-# Define the model
-wavlm_model = WavLMWrapper(
-    pretrain_model="wavlm_large", 
-    finetune_method="lora",
-    lora_rank=16,
-    output_class_num=16,
-    freeze_params=True, 
-    use_conv_output=True,
-    apply_gradient_reversal=False,
-)
-
 # Load model from Huggingface
-wavlm_model = wavlm_model.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
+wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
 wavlm_model.eval()
 
 # Load data, here just zeros as the example, audio data should be 16kHz mono channel
 data = torch.zeros([1, 16000]).float().to(device)
 wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
     
-# Probability
+# Probability and output
 wavlm_prob = F.softmax(wavlm_logits, dim=1)
 accent_label = print(english_accent_list[torch.argmax(wavlm_prob).detach().cpu().item()])
 ```
-
-Other example is also under example like src/example/broad_accent_wavlm.py
-Simply replace the model path with the model weights provided. The availabel labels are ['British Isles', 'North America', 'Other'].
 
 #### Given that the Vox-Profile Benchmark paper is still under peer-review, we provide limited set of models and model weights before the review is concluded. But below are the models we currently put out.
 
