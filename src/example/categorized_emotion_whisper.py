@@ -48,7 +48,8 @@ if __name__ == '__main__':
     model = WhisperWrapper.from_pretrained("tiantiaf/whisper-large-v3-msp-podcast-emotion").to(device)
     model.eval()
     
-    # Audio must be 16k Hz
+    # Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation)
+    # So you need to prepare your audio to a maximum of 15 seconds, 16kHz and mono channel
     data = torch.zeros([1, 16000]).float().to(device)
     logits, embedding, _, _, _, _ = model(
         data, return_feature=True

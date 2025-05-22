@@ -22,9 +22,12 @@ device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
 model = WhisperWrapper.from_pretrained("tiantiaf/whisper-large-v3-msp-podcast-emotion").to(device)
 model.eval()
 
-# Load data, here just zeros as the example, audio data should be 16kHz mono channel
+# Load data, here just zeros as the example
+# Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation)
+# So you need to prepare your audio to a maximum of 15 seconds, 16kHz and mono channel
+max_audio_length = 15 * 16000
 data, _ = torchaudio.load("YOUR_DATA")
-data = data.float().to(device)
+data = data.float().to(device)[:, :max_audio_length]
 logits, embedding, _, _, _, _ = model(data, return_feature=True)
     
 # Probability

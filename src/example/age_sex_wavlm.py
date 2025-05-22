@@ -37,7 +37,8 @@ if __name__ == '__main__':
     wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-age-sex").to(device)
     # wavlm_model.eval()
 
-    # Audio must be 16k Hz
+    # Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation)
+    # So you need to prepare your audio to a maximum of 15 seconds, 16kHz and mono channel
     data = torch.zeros([1, 16000]).float().to(device)
     wavlm_age_outputs, wavlm_sex_outputs = wavlm_model(data)
 

@@ -37,7 +37,9 @@ if __name__ == '__main__':
     # Define the model
     model = WhisperWrapper.from_pretrained("tiantiaf/whisper-large-v3-broad-accent").to(device)
     model.eval()
-        
+    
+    # Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation)
+    # So you need to prepare your audio to a maximum of 15 seconds, 16kHz and mono channel
     data = torch.zeros([1, 16000]).float().to(device)
     logits, embeddings = model(data, return_feature=True)
     

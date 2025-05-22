@@ -41,7 +41,9 @@ if __name__ == '__main__':
     # Define the model
     wavlm_model = WavLMWrapper.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
     wavlm_model.eval()
-        
+
+    # Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation)
+    # So you need to prepare your audio to a maximum of 15 seconds, 16kHz and mono channel 
     data = torch.zeros([1, 16000]).float().to(device)
     wavlm_logits, wavlm_embeddings = wavlm_model(data, return_feature=True)
     

@@ -6,6 +6,8 @@
  <img src="img/vox-profile.png" width="800px">
 </div>
 
+### Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation), so you need to cut your audio to a maximum of 15 seconds, 16kHz and mono channel
+
 ### Download Repo
 ```
 git clone git@github.com:tiantiaf0627/vox-profile-release.git
@@ -68,6 +70,8 @@ Model Name  | Data  | Pre-trained Model | Use LoRa |  LoRa Rank Size  | Output |
 |--------------------------------------------------------|-------|-----------------|-----------------|-------------|------------------------|------------------------|
 | [whisper-large-v3-broader-accent](https://huggingface.co/tiantiaf/whisper-large-v3-broad-accent)   | See Paper (11 Datasets) | whisper-large v3              | Yes              | 16              | North American / British / Other (3-class)  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/broad_accent_whisper.py) |
 | [whisper-large-v3-narrow-accent](https://huggingface.co/tiantiaf/whisper-large-v3-narrow-accent)   | See Paper (11 Datasets) | whisper-large v3             | Yes              | 16              | See example  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/narrow_accent_whisper.py) |
+| [whisper-large-v3-voice-quality](https://huggingface.co/tiantiaf/whisper-large-v3-voice-quality)   | ParaSpeechCaps | wavlm-large              | Yes              | 16              | See example  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/voice_quality_whisper.py) |
+| [whisper-large-v3-influency](https://huggingface.co/tiantiaf/whisper-large-v3-speech-flow)   | SEP28K+FluencyBank | wavlm-large              | Yes              | 16              | Fluent/Disfluent (Specified Disfluency Types)  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/fluency_whisper.py) |
 | [whisper-large-v3-categorical-emotion](https://huggingface.co/tiantiaf/whisper-large-v3-msp-podcast-emotion)   | MSP-Podcast | whisper-large v3             | Yes              | 16              | 8 Emotions + Other  | [Example](https://github.com/tiantiaf0627/vox-profile-release/blob/main/src/example/categorized_emotion_whisper.py) |
 
 
