@@ -9,19 +9,54 @@
 ### Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation), so you need to cut your audio to a maximum of 15 seconds, 16kHz and mono channel
 
 ### Download Repo
-```
+```bash
 git clone git@github.com:tiantiaf0627/vox-profile-release.git
 ```
 
 ### Installation
-```
+```bash
 conda create -n vox_profile python=3.8
 cd vox-profile-release
 pip install -e .
 ```
 
-### Quick Example - WavLM Large Narrow Accent
+
+### Quick Example 1 - Whisper Large Narrow Accent
+```python
+# Load libraries
+import torch
+import torch.nn.functional as F
+from src.model.accent.whisper_accent import WhisperWrapper
+
+# Label List
+english_accent_list = [
+    'East Asia', 'English', 'Germanic', 'Irish', 
+    'North America', 'Northern Irish', 'Oceania', 
+    'Other', 'Romance', 'Scottish', 'Semitic', 'Slavic', 
+    'South African', 'Southeast Asia', 'South Asia', 'Welsh'
+]
+    
+# Find device
+device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
+
+# Load model from Huggingface
+whisper_model = WhisperWrapper.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
+whisper_model.eval()
+
+# Load data, here just zeros as the example
+# Our training data filters output audio shorter than 3 seconds (unreliable predictions) and longer than 15 seconds (computation limitation)
+# So you need to prepare your audio to a maximum of 15 seconds, 16kHz and mono channel
+max_audio_length = 15 * 16000
+data = torch.zeros([1, 16000]).float().to(device)[:, :max_audio_length]
+whisper_logits, whisper_embeddings = whisper_model(data, return_feature=True)
+    
+# Probability and output
+whisper_prob = F.softmax(whisper_logits, dim=1)
+print(english_accent_list[torch.argmax(whisper_prob).detach().cpu().item()])
 ```
+
+### Quick Example 2 - WavLM Large Narrow Accent
+```python
 # Load libraries
 import torch
 import torch.nn.functional as F
