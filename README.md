@@ -40,7 +40,7 @@ english_accent_list = [
 device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
 
 # Load model from Huggingface
-whisper_model = WhisperWrapper.from_pretrained("tiantiaf/wavlm-large-narrow-accent").to(device)
+whisper_model = WhisperWrapper.from_pretrained("tiantiaf/whisper-large-v3-narrow-accent").to(device)
 whisper_model.eval()
 
 # Load data, here just zeros as the example
