@@ -18,7 +18,7 @@ git clone git@github.com:tiantiaf0627/vox-profile-release.git
 conda create -n vox_profile python=3.10
 cd vox-profile-release
 pip uninstall vox-profile -y
-python -m build
+python setup.py sdist bdist_wheel
 pip install dist/vox_profile-0.1.0-py3-none-any.whl
 ```
 and you can quickly test it then by running exmaples.
