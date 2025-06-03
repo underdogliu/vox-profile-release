@@ -1,7 +1,7 @@
 import torch
 import torchaudio
 import torch.nn.functional as F
-from src.model.emotion.whisper_emotion import WhisperWrapper
+from vox_profile.model.emotion.whisper_emotion import WhisperWrapper
 
 emotion_list = [
     'Anger', 

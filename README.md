@@ -13,12 +13,15 @@
 git clone git@github.com:tiantiaf0627/vox-profile-release.git
 ```
 
-### Installation
+### Installation (via a pip wrap-uppackage)
 ```bash
-conda create -n vox_profile python=3.8
+conda create -n vox_profile python=3.10
 cd vox-profile-release
-pip install -e .
+pip uninstall vox-profile -y
+python -m build
+pip install dist/vox_profile-0.1.0-py3-none-any.whl
 ```
+and you can quickly test it then by running exmaples.
 
 
 ### Quick Example 1 - Whisper Large Narrow Accent
@@ -26,7 +29,7 @@ pip install -e .
 # Load libraries
 import torch
 import torch.nn.functional as F
-from src.model.accent.whisper_accent import WhisperWrapper
+from vox_profile.model.accent.whisper_accent import WhisperWrapper
 
 # Label List
 english_accent_list = [
@@ -60,7 +63,7 @@ print(english_accent_list[torch.argmax(whisper_prob).detach().cpu().item()])
 # Load libraries
 import torch
 import torch.nn.functional as F
-from src.model.accent.wavlm_accent import WavLMWrapper
+from vox_profile.model.accent.wavlm_accent import WavLMWrapper
 
 # Label List
 english_accent_list = [

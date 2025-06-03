@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as F
-from src.model.accent.wavlm_accent import WavLMWrapper
+from vox_profile.model.accent.wavlm_accent import WavLMWrapper
 
 english_accent_list = [
     'East Asia', 'English', 'Germanic', 'Irish', 
